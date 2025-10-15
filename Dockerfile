@@ -4,41 +4,42 @@ WORKDIR /app
 
 COPY ./remotion/ .
 
-RUN npm install
+RUN npm ci
 
 RUN npm run bundle
 
 FROM node:21-slim as server
 WORKDIR /app
 
-RUN apt update
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
 RUN npm --no-update-notifier --no-fund --global install pnpm
 
 COPY . .
 
-RUN pnpm install
+RUN pnpm install --frozen-lockfile=false --ignore-scripts
+RUN pnpm approve-builds @ffprobe-installer/linux-x64 @prisma/client @prisma/engines @swc/core esbuild msgpackr-extract prisma protobufjs sharp
 
-RUN pnpm build
+RUN pnpm -r run build
+RUN pnpm -C apps/api prisma generate
 
 FROM node:21-slim
 WORKDIR /app
 
-RUN apt update && apt -y install --no-install-recommends ca-certificates git git-lfs openssh-client curl jq cmake sqlite3 openssl psmisc python3 
-RUN npm install -g node-gyp
-RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
-RUN apt-get install -y chromium
-# Copy API
-COPY --from=server /app/apps/api/package.json .
-COPY --from=server /app/apps/api/dist/ .
-COPY --from=server /app/apps/api/prisma/ .
+RUN apt-get update && apt-get -y install --no-install-recommends chromium ca-certificates sqlite3 openssl && rm -rf /var/lib/apt/lists/*
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+WORKDIR /app
+# Copy API runtime files
+COPY --from=server /app/apps/api/package.json ./package.json
+COPY --from=server /app/apps/api/dist/ ./dist/
+COPY --from=server /app/apps/api/prisma/ ./prisma/
 
-# Copy UI
-COPY --from=server /app/apps/ui/dist/ ./public
-# Copy Remotion
-COPY --from=video /app/dist/ ./video
+# Copy UI build
+COPY --from=server /app/apps/ui/dist/ ./public/
+# Copy Remotion bundle
+COPY --from=video /app/dist/ ./video/
 
-RUN yarn install 
+RUN npm ci --omit=dev || true
 
 ENV NODE_ENV=production
 
-CMD ["yarn", "start"]
+CMD ["npx", "fastify", "start", "-P", "dist/app.js"]
