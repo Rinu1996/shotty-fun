@@ -19,34 +19,31 @@ const app: FastifyPluginAsync<AppOptions> = async (
   fastify,
   opts
 ): Promise<void> => {
-  // Place here your custom code!
-  // increase the body limit to 50MB
-  void fastify.register(fastifyCors);
+  // Register CORS first
+  void fastify.register(fastifyCors, {
+    origin: true,
+    credentials: true
+  });
 
-  // Do not touch the following lines
-
-  // This loads all plugins defined in plugins
-  // those should be support plugins that are reused
-  // through your application
+  // Register all plugins (including env validation and error handler)
   void fastify.register(AutoLoad, {
     dir: path.join(__dirname, "plugins"),
     options: opts,
     forceESM: true,
   });
+
+  // Register static file serving
   fastify.register(fastifyStatic, {
     root: path.join(__dirname, "public"),
     preCompressed: true,
   });
   
-  // This loads all plugins defined in routes
-  // define your routes in one of these
+  // Register routes
   void fastify.register(AutoLoad, {
     dir: path.join(__dirname, "routes"),
     options: opts,
     forceESM: true,
   });
-
-
 };
 
 export default app;
