@@ -1,0 +1,68 @@
+# Node modules
+node_modules
+**/node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+**/.env
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+docs
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+.circleci
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+coverage
+.nyc_output
+test
+tests
+**/*.test.ts
+**/*.test.js
+**/*.spec.ts
+**/*.spec.js
+
+# Build artifacts (will be rebuilt in container)
+dist
+build
+.next
+.cache
+
+# Logs
+logs
+*.log
+
+# Misc
+.out
+out
+tmp
+temp
+
+# Development files
+*.local
+.eslintcache
