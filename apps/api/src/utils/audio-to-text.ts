@@ -25,7 +25,6 @@ export const audioToTranscript = async (audioData: Buffer) => {
   let output = (await transcriber(audio, {
     // chunk_length_s: 30,
     return_timestamps: true,
-    quantized: true,
   })) as {
     text: string;
     chunks: {
