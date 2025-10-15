@@ -9,8 +9,9 @@
   },
   "scripts": {
     "test": "npm run build:ts && tsc -p test/tsconfig.json && c8 tap --ts \"test/**/*.test.ts\"",
-    "start": "npx prisma generate && fastify start app.js",
+    "start": "node dist/app.js",
     "build": "tsc",
+    "postbuild": "node ../../remotion/bundle.js || true && mkdir -p ./video ./public && cp -r ../../remotion/dist/* ./video/ 2>/dev/null || true && cp -r ../ui/dist/* ./public/ 2>/dev/null || true",
     "build:ts": "tsc",
     "watch:ts": "tsc -w",
     "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch:ts\" \"npm:dev:start\"",

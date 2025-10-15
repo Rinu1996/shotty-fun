@@ -1,4 +1,5 @@
 import * as path from "path";
+import * as fs from "fs";
 import AutoLoad, { AutoloadPluginOptions } from "@fastify/autoload";
 import { FastifyPluginAsync } from "fastify";
 import { fileURLToPath } from "url";
@@ -33,18 +34,31 @@ const app: FastifyPluginAsync<AppOptions> = async (
     options: opts,
     forceESM: true,
   });
-  fastify.register(fastifyStatic, {
-    root: path.join(__dirname, "public"),
-    preCompressed: true,
-  });
-  
-  // This loads all plugins defined in routes
-  // define your routes in one of these
-  void fastify.register(AutoLoad, {
-    dir: path.join(__dirname, "routes"),
-    options: opts,
-    forceESM: true,
-  });
+
+  // Serve built UI from `../../ui/dist` in dev or `/app/public` in container
+  const uiCandidates = [
+    path.join(__dirname, "..", "..", "ui", "dist"),
+    path.join(__dirname, "public"),
+  ];
+  const uiRoot = uiCandidates.find((p) => fs.existsSync(p));
+  if (uiRoot) {
+    fastify.register(fastifyStatic, {
+      root: uiRoot,
+      prefix: "/",
+      preCompressed: true,
+      index: ["index.html"],
+    });
+  }
+
+  // Explicitly mount API routes under /api/v1 to avoid clashing with static
+  const { default: generate } = await import(
+    "./routes/api/v1/generate/index.js"
+  );
+  const { default: fileRoute } = await import(
+    "./routes/api/v1/file/index.js"
+  );
+  void fastify.register(generate, { prefix: "/api/v1/generate" });
+  void fastify.register(fileRoute, { prefix: "/api/v1/file" });
 
 
 };
