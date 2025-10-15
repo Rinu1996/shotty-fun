@@ -4,6 +4,7 @@ import { FastifyPluginAsync } from "fastify";
 import { fileURLToPath } from "url";
 import fastifyCors from "@fastify/cors";
 import fastifyStatic from "@fastify/static";
+import healthRoutes from "./routes/health.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,6 +38,9 @@ const app: FastifyPluginAsync<AppOptions> = async (
     root: path.join(__dirname, "public"),
     preCompressed: true,
   });
+
+  // Register health check routes
+  void fastify.register(healthRoutes);
   
   // This loads all plugins defined in routes
   // define your routes in one of these
