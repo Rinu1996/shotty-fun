@@ -46,24 +46,26 @@ export default async function queueHandler(job: Job) {
       },
     });
 
-    let audio: any;
+    let audio: Buffer;
 
     if (USE_TTS) {
-      audio = (await ttsSelfHosted(script)) as ArrayBuffer;
-      audio = await convertWaveToMp3VolumeBoostFromBuffer(Buffer.from(audio));
+      const audioBuffer = (await ttsSelfHosted(script)) as ArrayBuffer;
+      const convertedAudio = await convertWaveToMp3VolumeBoostFromBuffer(Buffer.from(audioBuffer));
+      audio = Buffer.from(convertedAudio);
     } else {
-      audio = (await textToSpeech(script)) as ArrayBuffer;
+      const audioBuffer = (await textToSpeech(script)) as ArrayBuffer;
+      audio = Buffer.from(audioBuffer);
     }
 
     const mp3File = await prisma.file.create({
       data: {
-        encoding: Buffer.from(audio),
+        encoding: audio,
         type: "mp3",
         video_id: process.id,
       },
     });
 
-    const transcript = await audioToTranscriptAPI(Buffer.from(audio));
+    const transcript = await audioToTranscriptAPI(audio);
     const totalDuration =
       transcript.chunks[transcript.chunks.length - 1].timestamp[1];
     const trans = await splitTextByTimestamp(transcript, totalDuration);
@@ -117,7 +119,7 @@ export default async function queueHandler(job: Job) {
     });
     console.log("Done");
   } catch (e) {
-    console.log(e);
+    console.error('Queue processing error:', e);
 
     await prisma.video.update({
       where: {

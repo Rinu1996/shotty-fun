@@ -34,7 +34,7 @@ function App() {
     } else {
       setAppState("form");
     }
-  }, [videoId]);
+  }, [videoId, videoStatus]);
 
   const { data: videoInfo, status: videoInfoStatus } = useQuery({
     queryKey: ["fetchVideoInfo", videoId],
@@ -52,7 +52,7 @@ function App() {
       setVideoStatus(videoInfo.status);
       setAppState(videoInfo.status);
     }
-  }, [videoInfo]);
+  }, [videoInfo, setVideoStatus]);
 
   return (
     <AppShell header={{ height: 60 }} padding="md">
