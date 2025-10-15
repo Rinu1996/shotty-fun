@@ -5,8 +5,14 @@ import { IconDownload } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
 import { notifications } from "@mantine/notifications";
 
+type VideoData = {
+  id: string;
+  status: string;
+  [key: string]: unknown;
+};
+
 type Props = {
-  data: any;
+  data: VideoData;
   setAppState: (value: "form" | "loading" | "done") => void;
   setVideId: (val: ((prevState: null) => null) | null) => void;
   setVideoStatus: (val: ((prevState: null) => null) | null) => void;
@@ -36,7 +42,7 @@ export const VideoDone: React.FC<Props> = ({
   const { mutate: downloadVideoMutation, isPending: isDownloading } =
     useMutation({
       mutationFn: (data: string) => downloadVideo(data),
-      onError: (error: any) => {
+      onError: (error: Error) => {
         notifications.show({
           title: "Error",
           message: error.message || "Something went wrong",

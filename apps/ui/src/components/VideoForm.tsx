@@ -53,7 +53,7 @@ export const VideoForm: React.FC<Props> = ({
     },
   });
 
-  const generateRequest = async (values: any) => {
+  const generateRequest = async (values: { platform: string; content: string }) => {
     const baseURL = import.meta.env.VITE_API_URL || "/api/v1";
     const response = await axios.post(`${baseURL}/generate`, {
       ...values,

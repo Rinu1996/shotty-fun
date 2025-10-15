@@ -35,10 +35,10 @@ export const generateVideo = async (
       video_id: process.id,
       status: "pending",
     };
-  } catch (error: any) {
-    console.log(error);
+  } catch (error) {
+    request.server.log.error(error, 'Error in generateVideo handler');
     return reply.status(500).send({
-      error: error?.message || "Internal Server Error",
+      error: error instanceof Error ? error.message : "Internal Server Error",
     });
   }
 };
