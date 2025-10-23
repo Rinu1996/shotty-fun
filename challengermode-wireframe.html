@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challengermode Player App Wireframe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            margin: 20px auto;
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            background: #fff;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: #f8f8f8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .top-bar {
+            height: 60px;
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .bottom-nav {
+            height: 80px;
+            background: #f8f8f8;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #e0e0e0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: #666;
+        }
+
+        .nav-item.active {
+            color: #000;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 4px;
+            margin-bottom: 4px;
+        }
+
+        .content {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #000;
+        }
+
+        .card {
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .tournament-card {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .game-logo {
+            width: 40px;
+            height: 40px;
+            background: #ccc;
+            border-radius: 6px;
+            margin-right: 12px;
+        }
+
+        .tournament-info {
+            flex: 1;
+        }
+
+        .tournament-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .tournament-details {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .join-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .horizontal-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding-bottom: 8px;
+        }
+
+        .horizontal-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .search-bar {
+            width: 100%;
+            height: 40px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 0 16px;
+            margin-bottom: 16px;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .filter-chip {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-bottom: 2px solid transparent;
+            font-size: 14px;
+        }
+
+        .tab.active {
+            border-bottom-color: #000;
+            font-weight: 600;
+        }
+
+        .bracket-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .bracket-round {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .bracket-match {
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 8px;
+            text-align: center;
+            font-size: 10px;
+        }
+
+        .match-card {
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .match-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .status-scheduled { background: #f0f0f0; color: #666; }
+        .status-live { background: #e8f5e8; color: #2d5a2d; }
+        .status-completed { background: #f0f0f0; color: #666; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .stat-box {
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .profile-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: #ccc;
+            border-radius: 40px;
+            margin: 0 auto 12px;
+        }
+
+        .username {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .xp-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .xp-progress {
+            height: 100%;
+            background: #ccc;
+            width: 60%;
+        }
+
+        .wallet-balance {
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .balance-amount {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .balance-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .notification-icon {
+            width: 32px;
+            height: 32px;
+            background: #ccc;
+            border-radius: 16px;
+            margin-right: 12px;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .unread-dot {
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .toggle {
+            width: 44px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .toggle.active {
+            background: #000;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+
+        .toggle.active::after {
+            transform: translateX(20px);
+        }
+
+        .btn-primary {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            margin: 8px 0;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #000;
+            border: 1px solid #ddd;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            margin: 8px 0;
+        }
+
+        .countdown-timer {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            margin: 20px 0;
+        }
+
+        .checkin-card {
+            background: #e8f5e8;
+            border: 1px solid #2d5a2d;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        .ready-status {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d5a2d;
+            margin-bottom: 8px;
+        }
+
+        .screen-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .screen-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: #000;
+            border-radius: 28px;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .chat-message {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .chat-avatar {
+            width: 32px;
+            height: 32px;
+            background: #ccc;
+            border-radius: 16px;
+            margin-right: 8px;
+        }
+
+        .chat-content {
+            flex: 1;
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 12px;
+        }
+
+        .chat-username {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .chat-text {
+            font-size: 14px;
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #ff0000;
+            border-radius: 4px;
+            margin-right: 4px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .screen-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: #000;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .screen-selector select {
+            background: #000;
+            color: #fff;
+            border: none;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-selector">
+        <select id="screenSelector" onchange="showScreen(this.value)">
+            <option value="splash">1. Splash</option>
+            <option value="login">2. Login/Signup</option>
+            <option value="verification">3. Verification</option>
+            <option value="home">4. Home/Dashboard</option>
+            <option value="discover">5. Discover</option>
+            <option value="tournament-detail">6. Tournament Detail</option>
+            <option value="checkin">7. Check-in</option>
+            <option value="matches">8. My Matches</option>
+            <option value="live-match">9. Live Match</option>
+            <option value="post-match">10. Post-Match</option>
+            <option value="profile">11. Profile</option>
+            <option value="notifications">12. Notifications</option>
+            <option value="settings">13. Settings</option>
+        </select>
+    </div>
+
+    <div class="phone-frame">
+        <!-- 1. Splash Screen -->
+        <div id="splash" class="screen active">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div style="width: 120px; height: 120px; background: #ccc; border-radius: 20px; margin-bottom: 24px;"></div>
+                <h1 style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">Challengermode</h1>
+                <p style="color: #666; text-align: center;">Competitive Gaming Platform</p>
+            </div>
+        </div>
+
+        <!-- 2. Login/Signup Screen -->
+        <div id="login" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="content">
+                <div style="text-align: center; margin: 40px 0;">
+                    <div style="width: 80px; height: 80px; background: #ccc; border-radius: 16px; margin: 0 auto 24px;"></div>
+                    <h1 style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">Welcome Back</h1>
+                    <p style="color: #666;">Sign in to your account</p>
+                </div>
+                
+                <div class="card">
+                    <input type="email" placeholder="Email address" style="width: 100%; height: 48px; border: 1px solid #ddd; border-radius: 8px; padding: 0 16px; margin-bottom: 12px;">
+                    <input type="password" placeholder="Password" style="width: 100%; height: 48px; border: 1px solid #ddd; border-radius: 8px; padding: 0 16px; margin-bottom: 16px;">
+                    <button class="btn-primary">Sign In</button>
+                </div>
+
+                <div style="text-align: center; margin: 20px 0; color: #666;">or</div>
+
+                <div class="card">
+                    <button class="btn-secondary" style="margin-bottom: 8px;">Continue with Discord</button>
+                    <button class="btn-secondary">Continue with Google</button>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="#" style="color: #000; text-decoration: none;">Don't have an account? Sign up</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Verification Success -->
+        <div id="verification" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px;">
+                <div style="width: 80px; height: 80px; background: #e8f5e8; border-radius: 40px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                    <span style="font-size: 32px; color: #2d5a2d;">✓</span>
+                </div>
+                <h1 style="font-size: 24px; font-weight: 600; margin-bottom: 8px; text-align: center;">Verification Complete</h1>
+                <p style="color: #666; text-align: center; margin-bottom: 32px;">Your account has been verified successfully</p>
+                <button class="btn-primary">Continue to App</button>
+            </div>
+        </div>
+
+        <!-- 4. Home/Dashboard -->
+        <div id="home" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <div style="width: 32px; height: 32px; background: #ccc; border-radius: 16px;"></div>
+                <h1 style="font-size: 18px; font-weight: 600;">Challengermode</h1>
+                <div style="display: flex; gap: 12px;">
+                    <div style="width: 24px; height: 24px; background: #ccc; border-radius: 4px;"></div>
+                    <div style="width: 24px; height: 24px; background: #ccc; border-radius: 4px;"></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="section">
+                    <h2 class="section-title">Featured Tournaments</h2>
+                    <div class="horizontal-scroll">
+                        <div class="tournament-card" style="min-width: 280px;">
+                            <div class="game-logo"></div>
+                            <div class="tournament-info">
+                                <div class="tournament-name">Valorant Championship</div>
+                                <div class="tournament-details">$5,000 Prize Pool • Starts in 2h</div>
+                            </div>
+                            <button class="join-btn">Join</button>
+                        </div>
+                        <div class="tournament-card" style="min-width: 280px;">
+                            <div class="game-logo"></div>
+                            <div class="tournament-info">
+                                <div class="tournament-name">CS2 Weekly Cup</div>
+                                <div class="tournament-details">$1,200 Prize Pool • Starts in 5h</div>
+                            </div>
+                            <button class="join-btn">Join</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">My Tournaments</h2>
+                    <div class="tournament-card">
+                        <div class="game-logo"></div>
+                        <div class="tournament-info">
+                            <div class="tournament-name">Rocket League Open</div>
+                            <div class="tournament-details">Check-in in 30min • $800 Prize</div>
+                        </div>
+                        <div style="font-size: 12px; color: #2d5a2d; font-weight: 600;">Active</div>
+                    </div>
+                    <div class="tournament-card">
+                        <div class="game-logo"></div>
+                        <div class="tournament-info">
+                            <div class="tournament-name">Fortnite Battle Royale</div>
+                            <div class="tournament-details">Starts tomorrow • $2,000 Prize</div>
+                        </div>
+                        <div style="font-size: 12px; color: #666;">Upcoming</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title">Spaces You Follow</h2>
+                    <div class="horizontal-scroll">
+                        <div style="min-width: 60px; text-align: center;">
+                            <div style="width: 40px; height: 40px; background: #ccc; border-radius: 20px; margin: 0 auto 8px;"></div>
+                            <div style="font-size: 10px;">ESL</div>
+                        </div>
+                        <div style="min-width: 60px; text-align: center;">
+                            <div style="width: 40px; height: 40px; background: #ccc; border-radius: 20px; margin: 0 auto 8px;"></div>
+                            <div style="font-size: 10px;">FaZe</div>
+                        </div>
+                        <div style="min-width: 60px; text-align: center;">
+                            <div style="width: 40px; height: 40px; background: #ccc; border-radius: 20px; margin: 0 auto 8px;"></div>
+                            <div style="font-size: 10px;">G2</div>
+                        </div>
+                        <div style="min-width: 60px; text-align: center;">
+                            <div style="width: 40px; height: 40px; background: #ccc; border-radius: 20px; margin: 0 auto 8px;"></div>
+                            <div style="font-size: 10px;">T1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item active">
+                    <div class="nav-icon"></div>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon"></div>
+                    <span>Discover</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon"></div>
+                    <span>Matches</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon"></div>
+                    <span>Profile</span>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-icon"></div>
+                    <span>More</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Discover Screen -->
+        <div id="discover" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <h1 class="screen-title">Discover</h1>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="content">
+                <input type="text" placeholder="Search tournaments..." class="search-bar">
+                
+                <div class="filter-chips">
+                    <div class="filter-chip">All Games</div>
+                    <div class="filter-chip">Valorant</div>
+                    <div class="filter-chip">CS2</div>
+                    <div class="filter-chip">Rocket League</div>
+                    <div class="filter-chip">Free Entry</div>
+                    <div class="filter-chip">This Week</div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active">Tournaments</div>
+                    <div class="tab">Spaces</div>
+                    <div class="tab">Ladders</div>
+                    <div class="tab">Leagues</div>
+                </div>
+
+                <div class="tournament-card">
+                    <div class="game-logo"></div>
+                    <div class="tournament-info">
+                        <div class="tournament-name">Valorant Weekly Cup</div>
+                        <div class="tournament-details">Starts in 1h 30min • $2,500 Prize Pool</div>
+                    </div>
+                    <button class="join-btn">Join</button>
+                </div>
+
+                <div class="tournament-card">
+                    <div class="game-logo"></div>
+                    <div class="tournament-info">
+                        <div class="tournament-name">CS2 Championship</div>
+                        <div class="tournament-details">Starts tomorrow • $10,000 Prize Pool</div>
+                    </div>
+                    <button class="join-btn">Join</button>
+                </div>
+
+                <div class="tournament-card">
+                    <div class="game-logo"></div>
+                    <div class="tournament-info">
+                        <div class="tournament-name">Rocket League Open</div>
+                        <div class="tournament-details">Starts in 3 days • $1,500 Prize Pool</div>
+                    </div>
+                    <button class="join-btn">Join</button>
+                </div>
+
+                <div class="tournament-card">
+                    <div class="game-logo"></div>
+                    <div class="tournament-info">
+                        <div class="tournament-name">Fortnite Battle Royale</div>
+                        <div class="tournament-details">Starts next week • $5,000 Prize Pool</div>
+                    </div>
+                    <button class="join-btn">Join</button>
+                </div>
+            </div>
+            <button class="floating-btn">⚙️</button>
+        </div>
+
+        <!-- 6. Tournament Detail Screen -->
+        <div id="tournament-detail" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <h1 class="screen-title">Tournament</h1>
+                <button class="action-btn">Share</button>
+            </div>
+            <div style="height: 120px; background: #ccc; margin-bottom: 16px;"></div>
+            <div class="content">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 4px;">Valorant Championship</h2>
+                    <p style="color: #666;">Organized by ESL Gaming</p>
+                    <button class="btn-primary" style="margin-top: 12px;">Join Tournament</button>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active">Overview</div>
+                    <div class="tab">Rules</div>
+                    <div class="tab">Bracket</div>
+                    <div class="tab">Participants</div>
+                    <div class="tab">Prizes</div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Tournament Details</h3>
+                    <div style="margin-bottom: 8px;"><strong>Entry Fee:</strong> Free</div>
+                    <div style="margin-bottom: 8px;"><strong>Start Time:</strong> Today, 7:00 PM EST</div>
+                    <div style="margin-bottom: 8px;"><strong>Prize Pool:</strong> $5,000</div>
+                    <div style="margin-bottom: 8px;"><strong>Format:</strong> Single Elimination</div>
+                    <div style="margin-bottom: 8px;"><strong>Max Players:</strong> 64</div>
+                    <div style="margin-bottom: 12px;"><strong>Eligibility:</strong> All regions</div>
+                    <p style="color: #666; font-size: 14px;">Join the biggest Valorant tournament of the month! Compete against the best players and win your share of the $5,000 prize pool.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Check-in Flow -->
+        <div id="checkin" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <h1 class="screen-title">Check-in</h1>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="content">
+                <div class="countdown-timer">02:45:30</div>
+                <p style="text-align: center; color: #666; margin-bottom: 32px;">Time until next match</p>
+
+                <div class="checkin-card">
+                    <div class="ready-status">You're Ready!</div>
+                    <p style="color: #2d5a2d; font-size: 14px;">Successfully checked in for your next match</p>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Match Status</h3>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Your Status:</span>
+                        <span style="color: #2d5a2d; font-weight: 600;">Ready</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Opponent:</span>
+                        <span>Waiting for match...</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Match Start:</span>
+                        <span>In 2h 45min</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Next Steps</h3>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 8px;">1. Stay online and ready</p>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 8px;">2. You'll be notified when your match starts</p>
+                    <p style="color: #666; font-size: 14px;">3. Join the match room when prompted</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. My Matches/Schedule -->
+        <div id="matches" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <h1 class="screen-title">My Matches</h1>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="content">
+                <div class="tabs">
+                    <div class="tab active">Upcoming</div>
+                    <div class="tab">Past</div>
+                </div>
+
+                <div class="match-card">
+                    <div class="match-header">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">vs Team Alpha</div>
+                            <div style="font-size: 12px; color: #666;">Valorant Championship</div>
+                        </div>
+                        <div class="match-status status-live">
+                            <span class="live-indicator"></span>Live
+                        </div>
+                    </div>
+                    <div style="margin: 12px 0;">
+                        <div style="font-size: 14px; color: #666; margin-bottom: 4px;">Match Time: Now</div>
+                        <div style="font-size: 14px; color: #666;">Best of 3 • Map 1 of 3</div>
+                    </div>
+                    <button class="btn-primary">Go to Match</button>
+                </div>
+
+                <div class="match-card">
+                    <div class="match-header">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">vs ProGamer99</div>
+                            <div style="font-size: 12px; color: #666;">CS2 Weekly Cup</div>
+                        </div>
+                        <div class="match-status status-scheduled">Scheduled</div>
+                    </div>
+                    <div style="margin: 12px 0;">
+                        <div style="font-size: 14px; color: #666; margin-bottom: 4px;">Match Time: Tomorrow, 3:00 PM</div>
+                        <div style="font-size: 14px; color: #666;">Best of 1</div>
+                    </div>
+                    <button class="btn-secondary">View Details</button>
+                </div>
+
+                <div class="match-card">
+                    <div class="match-header">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">vs RocketKing</div>
+                            <div style="font-size: 12px; color: #666;">Rocket League Open</div>
+                        </div>
+                        <div class="match-status status-completed">Completed</div>
+                    </div>
+                    <div style="margin: 12px 0;">
+                        <div style="font-size: 14px; color: #666; margin-bottom: 4px;">Match Time: Yesterday, 7:00 PM</div>
+                        <div style="font-size: 14px; color: #2d5a2d; font-weight: 600;">Result: Win (3-1)</div>
+                    </div>
+                    <button class="btn-secondary">View Results</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. Live Match Page -->
+        <div id="live-match" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <h1 class="screen-title">Live Match</h1>
+                <button class="action-btn">Report</button>
+            </div>
+            <div class="content">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="width: 60px; height: 60px; background: #ccc; border-radius: 8px; margin: 0 auto 12px;"></div>
+                    <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">Valorant Championship</h2>
+                    <div style="display: flex; align-items: center; justify-content: center; color: #ff0000; font-weight: 600;">
+                        <span class="live-indicator"></span>LIVE
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active">Live</div>
+                    <div class="tab">Chat</div>
+                    <div class="tab">Results</div>
+                </div>
+
+                <div class="card">
+                    <div style="text-align: center; margin-bottom: 16px;">
+                        <div style="font-size: 24px; font-weight: 600; margin-bottom: 8px;">Map 1 of 3</div>
+                        <div style="font-size: 14px; color: #666;">Ascent • 13-11</div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 20px; font-weight: 600;">Your Team</div>
+                            <div style="font-size: 32px; font-weight: 600; color: #2d5a2d;">13</div>
+                        </div>
+                        <div style="font-size: 14px; color: #666;">vs</div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 20px; font-weight: 600;">Team Alpha</div>
+                            <div style="font-size: 32px; font-weight: 600; color: #666;">11</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; font-size: 14px; color: #666;">
+                        Round 25 • 1:45 remaining
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Match Chat</h3>
+                    <div class="chat-message">
+                        <div class="chat-avatar"></div>
+                        <div class="chat-content">
+                            <div class="chat-username">ProGamer99</div>
+                            <div class="chat-text">Nice clutch!</div>
+                        </div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-avatar"></div>
+                        <div class="chat-content">
+                            <div class="chat-username">You</div>
+                            <div class="chat-text">Thanks! Let's win this</div>
+                        </div>
+                    </div>
+                    <div class="chat-message">
+                        <div class="chat-avatar"></div>
+                        <div class="chat-content">
+                            <div class="chat-username">TeamAlpha_Leader</div>
+                            <div class="chat-text">GG, well played</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. Post-Match Results -->
+        <div id="post-match" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <h1 class="screen-title">Match Results</h1>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="content">
+                <div class="card" style="text-align: center; background: #e8f5e8; border-color: #2d5a2d;">
+                    <div style="font-size: 24px; font-weight: 600; color: #2d5a2d; margin-bottom: 8px;">Victory!</div>
+                    <div style="font-size: 18px; margin-bottom: 4px;">Your Team 3 - 1 Team Alpha</div>
+                    <div style="font-size: 14px; color: #666;">Match Duration: 45 minutes</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Kills</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Deaths</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Assists</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Performance Summary</h3>
+                    <div style="margin-bottom: 8px;"><strong>K/D Ratio:</strong> 3.0</div>
+                    <div style="margin-bottom: 8px;"><strong>Headshot %:</strong> 67%</div>
+                    <div style="margin-bottom: 8px;"><strong>First Bloods:</strong> 4</div>
+                    <div style="margin-bottom: 8px;"><strong>Clutches:</strong> 2</div>
+                    <div style="margin-bottom: 12px;"><strong>MVP:</strong> Yes</div>
+                    <div style="background: #f0f0f0; padding: 8px; border-radius: 4px; font-size: 14px; color: #2d5a2d; font-weight: 600;">
+                        🏆 You were the MVP of this match!
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Rewards</h3>
+                    <div style="margin-bottom: 8px;"><strong>XP Gained:</strong> +150</div>
+                    <div style="margin-bottom: 8px;"><strong>Rank Points:</strong> +25</div>
+                    <div style="margin-bottom: 12px;"><strong>Prize Money:</strong> $125.00</div>
+                    <p style="font-size: 14px; color: #666;">Prize money will be added to your wallet within 24 hours.</p>
+                </div>
+
+                <button class="btn-primary">Return to Home</button>
+                <button class="btn-secondary">Find Next Tournament</button>
+            </div>
+        </div>
+
+        <!-- 11. Profile Screen -->
+        <div id="profile" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <h1 class="screen-title">Profile</h1>
+                <button class="action-btn">Edit</button>
+            </div>
+            <div class="content">
+                <div class="profile-header">
+                    <div class="avatar"></div>
+                    <div class="username">ProGamer99</div>
+                    <div class="rank-badge">Diamond III</div>
+                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">2,450 XP</div>
+                    <div class="xp-bar">
+                        <div class="xp-progress"></div>
+                    </div>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active">Overview</div>
+                    <div class="tab">Teams</div>
+                    <div class="tab">History</div>
+                    <div class="tab">Wallet</div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Personal Information</h3>
+                    <div style="margin-bottom: 8px;"><strong>Email:</strong> pro.gamer@email.com</div>
+                    <div style="margin-bottom: 8px;"><strong>Country:</strong> United States</div>
+                    <div style="margin-bottom: 8px;"><strong>Member Since:</strong> January 2023</div>
+                    <div style="margin-bottom: 12px;"><strong>Total Matches:</strong> 127</div>
+                    <button class="btn-secondary">Edit Profile</button>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value">89</div>
+                            <div class="stat-label">Wins</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">38</div>
+                            <div class="stat-label">Losses</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">70%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. Notifications -->
+        <div id="notifications" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <h1 class="screen-title">Notifications</h1>
+                <button class="action-btn">Mark All</button>
+            </div>
+            <div class="content">
+                <div class="notification-item">
+                    <div class="notification-icon"></div>
+                    <div class="notification-content">
+                        <div class="notification-title">Match Starting Soon</div>
+                        <div style="font-size: 12px; color: #666;">Your Valorant match starts in 15 minutes</div>
+                        <div class="notification-time">2 minutes ago</div>
+                    </div>
+                    <div class="unread-dot"></div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-icon"></div>
+                    <div class="notification-content">
+                        <div class="notification-title">Tournament Reminder</div>
+                        <div style="font-size: 12px; color: #666;">CS2 Weekly Cup check-in opens in 1 hour</div>
+                        <div class="notification-time">1 hour ago</div>
+                    </div>
+                    <div class="unread-dot"></div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-icon"></div>
+                    <div class="notification-content">
+                        <div class="notification-title">Prize Payout</div>
+                        <div style="font-size: 12px; color: #666;">$125.00 has been added to your wallet</div>
+                        <div class="notification-time">3 hours ago</div>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-icon"></div>
+                    <div class="notification-content">
+                        <div class="notification-title">Team Invitation</div>
+                        <div style="font-size: 12px; color: #666;">You've been invited to join "Elite Squad"</div>
+                        <div class="notification-time">1 day ago</div>
+                    </div>
+                </div>
+
+                <div class="notification-item">
+                    <div class="notification-icon"></div>
+                    <div class="notification-content">
+                        <div class="notification-title">Rank Up</div>
+                        <div style="font-size: 12px; color: #666;">Congratulations! You've reached Diamond III</div>
+                        <div class="notification-time">2 days ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 13. Settings -->
+        <div id="settings" class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="top-bar">
+                <button class="back-btn">←</button>
+                <h1 class="screen-title">Settings</h1>
+                <div style="width: 24px;"></div>
+            </div>
+            <div class="content">
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Account</h3>
+                    <div class="settings-item">
+                        <span>Privacy Settings</span>
+                        <span>→</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Linked Game Accounts</span>
+                        <span>→</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Payment Methods</span>
+                        <span>→</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Notifications</h3>
+                    <div class="settings-item">
+                        <span>Match Reminders</span>
+                        <div class="toggle active"></div>
+                    </div>
+                    <div class="settings-item">
+                        <span>Tournament Updates</span>
+                        <div class="toggle active"></div>
+                    </div>
+                    <div class="settings-item">
+                        <span>Prize Notifications</span>
+                        <div class="toggle active"></div>
+                    </div>
+                    <div class="settings-item">
+                        <span>Marketing Emails</span>
+                        <div class="toggle"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Support</h3>
+                    <div class="settings-item">
+                        <span>Help Center</span>
+                        <span>→</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Contact Support</span>
+                        <span>→</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Report a Bug</span>
+                        <span>→</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">About</h3>
+                    <div class="settings-item">
+                        <span>App Version</span>
+                        <span>2.1.0</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Terms of Service</span>
+                        <span>→</span>
+                    </div>
+                    <div class="settings-item">
+                        <span>Privacy Policy</span>
+                        <span>→</span>
+                    </div>
+                </div>
+
+                <button class="btn-secondary" style="background: #ff4444; color: #fff; margin-top: 20px;">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // Add click handlers for navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bottom navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    const screens = ['home', 'discover', 'matches', 'profile', 'settings'];
+                    showScreen(screens[index]);
+                });
+            });
+
+            // Back buttons
+            const backBtns = document.querySelectorAll('.back-btn');
+            backBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    showScreen('home');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
